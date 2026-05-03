@@ -6,15 +6,33 @@ import { Send, CheckCircle } from 'lucide-react';
 const Contact = () => {
   const [formState, setFormState] = useState('idle'); // idle, submitting, success
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
     setFormState('submitting');
     
-    // Simulate API call
-    setTimeout(() => {
-      setFormState('success');
-      setTimeout(() => setFormState('idle'), 3000);
-    }, 1500);
+    const formData = new FormData(e.target);
+    // Add your Web3Forms Access Key here
+    formData.append("access_key", "0a99530a-405d-4572-961e-8dcb1a19b145");
+
+    try {
+      const response = await fetch("https://api.web3forms.com/submit", {
+        method: "POST",
+        body: formData
+      });
+      const data = await response.json();
+      
+      if (data.success) {
+        setFormState('success');
+        e.target.reset();
+        setTimeout(() => setFormState('idle'), 5000);
+      } else {
+        console.error("Error", data);
+        setFormState('idle');
+      }
+    } catch (error) {
+      console.error(error);
+      setFormState('idle');
+    }
   };
 
   return (
@@ -54,6 +72,7 @@ const Contact = () => {
                 <input 
                   type="text" 
                   id="name"
+                  name="name"
                   required
                   className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3 text-white focus:outline-none focus:border-accent-purple focus:bg-white/10 transition-all peer placeholder-transparent"
                   placeholder="Name"
@@ -66,6 +85,7 @@ const Contact = () => {
                 <input 
                   type="email" 
                   id="email"
+                  name="email"
                   required
                   className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3 text-white focus:outline-none focus:border-accent-purple focus:bg-white/10 transition-all peer placeholder-transparent"
                   placeholder="Email"
@@ -80,6 +100,7 @@ const Contact = () => {
               <input 
                 type="text" 
                 id="subject"
+                name="subject"
                 required
                 className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3 text-white focus:outline-none focus:border-accent-purple focus:bg-white/10 transition-all peer placeholder-transparent"
                 placeholder="Subject"
@@ -92,6 +113,7 @@ const Contact = () => {
             <div className="relative group">
               <textarea 
                 id="message"
+                name="message"
                 required
                 rows="5"
                 className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3 text-white focus:outline-none focus:border-accent-purple focus:bg-white/10 transition-all peer placeholder-transparent resize-none"
