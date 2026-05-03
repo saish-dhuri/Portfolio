@@ -13,6 +13,13 @@ const Contact = () => {
     const formData = new FormData(e.target);
     // Add your Web3Forms Access Key here
     formData.append("access_key", "0a99530a-405d-4572-961e-8dcb1a19b145");
+    
+    // Set custom sender name so it stands out in your inbox
+    formData.append("from_name", "Portfolio Lead 🚀");
+    
+    // Grab the subject the user typed and prepend 'Portfolio:' to it
+    const originalSubject = formData.get("subject");
+    formData.set("subject", `New Portfolio Message: ${originalSubject}`);
 
     try {
       const response = await fetch("https://api.web3forms.com/submit", {
