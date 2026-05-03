@@ -131,8 +131,13 @@ const Contact = () => {
                   animate={{ opacity: 1, scale: 1 }}
                   className="flex items-center gap-2 text-accent-cyan font-medium py-3 px-6 rounded-full bg-accent-cyan/10 border border-accent-cyan/20"
                 >
-                  <CheckCircle size={20} />
-                  Message Sent Successfully!
+                  <div className="flex flex-col items-center">
+                    <div className="flex items-center gap-2">
+                      <CheckCircle size={20} />
+                      Message Delivered!
+                    </div>
+                    <span className="text-sm text-gray-400 mt-1">I'll get back to you shortly. Let's get connected! 🚀</span>
+                  </div>
                 </motion.div>
               ) : (
                 <MagneticButton variant="gradient" type="submit" className="w-full md:w-auto min-w-[200px]">
